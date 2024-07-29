@@ -2,20 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Category = require('../models/category');
 
-const mongoose = require('mongoose');
-
-const productSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-  price: { type: Number, required: true, min: 0 },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
-  description: { type: String, trim: true },
-  stock: { type: Number, required: true, min: 0 },
-});
-
-const Product = mongoose.model('Product', productSchema);
-module.exports = Product;
-
-
 // Create a new category
 router.post('/', async (req, res) => {
   try {

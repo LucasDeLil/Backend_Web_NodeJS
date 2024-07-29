@@ -2,23 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 
-
-// Search products by name with pagination
-router.get('/', async (req, res) => {
-  try {
-    const { name, limit = 10, offset = 0 } = req.query;
-    const query = name ? { name: new RegExp(name, 'i') } : {};
-    const products = await Product.find(query)
-      .populate('category')
-      .limit(parseInt(limit))
-      .skip(parseInt(offset));
-    res.send(products);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-
 // Create a new product
 router.post('/', async (req, res) => {
   try {
@@ -33,7 +16,12 @@ router.post('/', async (req, res) => {
 // Get all products
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find().populate('category');
+    const { name, limit = 10, offset = 0 } = req.query;
+    const query = name ? { name: new RegExp(name, 'i') } : {};
+    const products = await Product.find(query)
+      .populate('category')
+      .limit(parseInt(limit))
+      .skip(parseInt(offset));
     res.send(products);
   } catch (error) {
     res.status(500).send(error);
